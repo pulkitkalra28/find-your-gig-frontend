@@ -138,7 +138,7 @@ const ProductDetails = () => {
                                     className="btn"
                                     onClick={handleAddItem}
                                 >
-                                    Add to cart
+                                    Invite
                                 </button>
                             </div>
 

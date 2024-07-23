@@ -6,9 +6,8 @@ import useOutsideClose from '../../hooks/useOutsideClose';
 import useScrollDisable from '../../hooks/useScrollDisable';
 
 const AccountForm = () => {
-
-    const { isFormOpen, toggleForm } = useContext(commonContext);
-    const { inputValues, handleInputValues, handleFormSubmit } = useForm();
+    const { isFormOpen, toggleForm, setLoggedIn } = useContext(commonContext);
+    const { inputValues, handleInputValues, /*handleFormSubmit*/ } = useForm();
 
     const formRef = useRef();
 
@@ -19,125 +18,170 @@ const AccountForm = () => {
     useScrollDisable(isFormOpen);
 
     const [isSignupVisible, setIsSignupVisible] = useState(false);
-
+    const [errorMessage, setErrorMessage] = useState('');
 
     // Signup-form visibility toggling
     const handleIsSignupVisible = () => {
         setIsSignupVisible(prevState => !prevState);
+        setErrorMessage(''); // Clear error message when toggling forms
     };
 
+    // Handle form submission
+    const handleFormSubmit = async (event) => {
+        event.preventDefault();
+        setErrorMessage(''); // Clear any previous error messages
+
+        const apiUrl = isSignupVisible ? 'http://localhost:8080/api/user/register' : 'http://localhost:8080/api/user/login';
+        const requestBody = isSignupVisible
+            ? {
+                  fullName: inputValues.username,
+                  email: inputValues.mail,
+                  password: inputValues.password,
+                  type: inputValues.register_as.toUpperCase() // Assuming type is either 'ARTIST' or 'COMPANY'
+              }
+            : {
+                  email: inputValues.mail,
+                  password: inputValues.password
+              };
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                toggleForm(false); // Close the form on success
+                setLoggedIn(true);
+            } else {
+                setErrorMessage(result.errorDetail.description); // Show error message
+            }
+        } catch (error) {
+            setErrorMessage('An unexpected error occurred.'); // General error message
+        }
+    };
 
     return (
         <>
-            {
-                isFormOpen && (
-                    <div className="backdrop">
-                        <div className="modal_centered">
-                            <form id="account_form" ref={formRef} onSubmit={handleFormSubmit}>
+            {isFormOpen && (
+                <div className="backdrop">
+                    <div className="modal_centered">
+                        <form id="account_form" ref={formRef} onSubmit={handleFormSubmit}>
+                            {/*===== Form-Header =====*/}
+                            <div className="form_head">
+                                <h2>{isSignupVisible ? 'Signup' : 'Login'}</h2>
+                                <p>
+                                    {isSignupVisible ? 'Already have an account?' : 'New user?'}
+                                    &nbsp;&nbsp;
+                                    <button type="button" onClick={handleIsSignupVisible}>
+                                        {isSignupVisible ? 'Login' : 'Create an account'}
+                                    </button>
+                                </p>
+                            </div>
 
-                                {/*===== Form-Header =====*/}
-                                <div className="form_head">
-                                    <h2>{isSignupVisible ? 'Signup' : 'Login'}</h2>
-                                    <p>
-                                        {isSignupVisible ? 'Already have an account ?' : 'New user ?'}
-                                        &nbsp;&nbsp;
-                                        <button type="button" onClick={handleIsSignupVisible}>
-                                            {isSignupVisible ? 'Login' : 'Create an account'}
-                                        </button>
-                                    </p>
+                            {/*===== Error Message =====*/}
+                            {errorMessage && (
+                                <div className="error_message">
+                                    {errorMessage}
                                 </div>
+                            )}
 
-                                {/*===== Form-Body =====*/}
-                                <div className="form_body">
-                                    {
-                                        isSignupVisible && (
-                                            <div className="input_box">
-                                                <input
-                                                    type="text"
-                                                    name="username"
-                                                    className="input_field"
-                                                    value={inputValues.username || ''}
-                                                    onChange={handleInputValues}
-                                                    required
-                                                />
-                                                <label className="input_label">Username</label>
-                                            </div>
-                                        )
-                                    }
-
+                            {/*===== Form-Body =====*/}
+                            <div className="form_body">
+                                {isSignupVisible && (
                                     <div className="input_box">
                                         <input
-                                            type="email"
-                                            name="mail"
+                                            type="text"
+                                            name="username"
                                             className="input_field"
-                                            value={inputValues.mail || ''}
+                                            value={inputValues.username || ''}
                                             onChange={handleInputValues}
                                             required
                                         />
-                                        <label className="input_label">Email</label>
+                                        <label className="input_label">Full Name</label>
                                     </div>
+                                )}
 
+                                <div className="input_box">
+                                    <input
+                                        type="email"
+                                        name="mail"
+                                        className="input_field"
+                                        value={inputValues.mail || ''}
+                                        onChange={handleInputValues}
+                                        required
+                                    />
+                                    <label className="input_label">Email</label>
+                                </div>
+
+                                <div className="input_box">
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        className="input_field"
+                                        value={inputValues.password || ''}
+                                        onChange={handleInputValues}
+                                        required
+                                    />
+                                    <label className="input_label">Password</label>
+                                </div>
+
+                                {isSignupVisible && (
                                     <div className="input_box">
                                         <input
                                             type="password"
-                                            name="password"
+                                            name="conf_password"
                                             className="input_field"
-                                            value={inputValues.password || ''}
+                                            value={inputValues.conf_password || ''}
                                             onChange={handleInputValues}
                                             required
                                         />
-                                        <label className="input_label">Password</label>
+                                        <label className="input_label">Confirm Password</label>
                                     </div>
+                                )}
 
-                                    {
-                                        isSignupVisible && (
-                                            <div className="input_box">
-                                                <input
-                                                    type="password"
-                                                    name="conf_password"
-                                                    className="input_field"
-                                                    value={inputValues.conf_password || ''}
-                                                    onChange={handleInputValues}
-                                                    required
-                                                />
-                                                <label className="input_label">Confirm Password</label>
-                                            </div>
-                                        )
-                                    }
-
-                                    <button
-                                        type="submit"
-                                        className="btn login_btn"
-                                    >
-                                        {isSignupVisible ? 'Signup' : 'Login'}
-                                    </button>
-
-                                </div>
-
-                                {/*===== Form-Footer =====*/}
-                                <div className="form_foot">
-                                    <p>or login with</p>
-                                    <div className="login_options">
-                                        <Link to="/">Facebook</Link>
-                                        <Link to="/">Google</Link>
-                                        <Link to="/">Twitter</Link>
+                                {isSignupVisible && (
+                                    <div className="input_box">
+                                        <select
+                                            name="register_as"
+                                            className="input_field dropdown_field"
+                                            value={inputValues.register_as || ''}
+                                            onChange={handleInputValues}
+                                            required
+                                        >
+                                            <option value="" disabled hidden>Select</option>
+                                            <option className="option_style" value="Artist">Artist</option>
+                                            <option className="option_style" value="Company">Company</option>
+                                        </select>
+                                        <label className="input_label">Register as</label>
                                     </div>
-                                </div>
+                                )}
 
-                                {/*===== Form-Close-Btn =====*/}
-                                <div
-                                    className="close_btn"
-                                    title="Close"
-                                    onClick={() => toggleForm(false)}
+                                <button
+                                    type="submit"
+                                    className="btn login_btn"
                                 >
-                                    &times;
-                                </div>
+                                    {isSignupVisible ? 'Signup' : 'Login'}
+                                </button>
+                            </div>
 
-                            </form>
-                        </div>
+                            {/*===== Form-Close-Btn =====*/}
+                            <div
+                                className="close_btn"
+                                title="Close"
+                                onClick={() => toggleForm(false)}
+                            >
+                                &times;
+                            </div>
+                        </form>
                     </div>
-                )
-            }
+                </div>
+            )}
         </>
     );
 };

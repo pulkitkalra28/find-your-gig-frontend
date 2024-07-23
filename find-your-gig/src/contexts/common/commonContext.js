@@ -9,6 +9,7 @@ const initialState = {
     isFormOpen: false,
     formUserInfo: '',
     isSearchOpen: false,
+    isLoggedIn: false,
     searchResults: []
 };
 
@@ -40,6 +41,13 @@ const CommonProvider = ({ children }) => {
         });
     };
 
+    const setLoggedIn = (val) => {
+        return dispatch({
+            type: "SET_LOGGED_IN",
+            payload: { val }
+        })
+    }
+
     const setSearchResults = (results) => {
         return dispatch({
             type: 'SET_SEARCH_RESULTS',
@@ -53,6 +61,7 @@ const CommonProvider = ({ children }) => {
         toggleForm,
         setFormUserInfo,
         toggleSearch,
+        setLoggedIn,
         setSearchResults
     };
 

@@ -21,6 +21,11 @@ const commonReducer = (state, action) => {
                 isSearchOpen: action.payload.toggle
             };
 
+        case 'SET_LOGGED_IN':
+            return {
+                ...state,
+                isLoggedIn: action.payload.val
+            }    
 
         case 'SET_SEARCH_RESULTS':
             return {

@@ -84,6 +84,10 @@
     pointer-events: none;
 }
 
+.option_style {
+    color: var(--black-color);
+}
+
 .badge {
     display: inline-block;
     color: #fff;
@@ -195,4 +199,10 @@
 
 .swiper-pagination-bullet-active {
     background: var(--main-color) !important;
+}
+
+.error_message {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
 }
