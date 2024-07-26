@@ -6,6 +6,7 @@ import axios from 'axios';
 import './CompanyProfile.scss';
 import commonContext from '../../contexts/common/commonContext';
 import Loader from '../../components/common/loader/Loader';
+import { useLocation } from 'react-router-dom';
 
 const CompanyProfile = () => {
   const { loginResponse, loading, setLoading } = useContext(commonContext);
@@ -13,8 +14,11 @@ const CompanyProfile = () => {
   const [profilePic, setProfilePic] = useState('');
   const [showProfilePicOptions, setShowProfilePicOptions] = useState(false);
   const [locations, setLocations] = useState([]);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const userIdParam = queryParams.get('userId') || loginResponse.userId;
   const [formData, setFormData] = useState({
-    userId: loginResponse.userId || '',
+    userId: userIdParam,
     fullName: '',
     email: '',
     contactNumber: '',
@@ -24,13 +28,15 @@ const CompanyProfile = () => {
   const [updatedFormData, setUpdatedFormData] = useState(null);
 
   useEffect(() => {
-    if (loading) {
-      fetchCompanyDetails();
-    }
     if (isEditing) {
       fetchEditProfileFormData();
     }
-  }, [isEditing, loading]);
+    fetchCompanyDetails();
+  }, [isEditing]);
+
+  useEffect(() => {
+    fetchCompanyDetails();
+  }, []);
 
   const fetchCompanyDetails = async () => {
     try {

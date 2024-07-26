@@ -10,7 +10,7 @@ import SearchBar from './SearchBar';
 
 const Header = () => {
 
-    const { formUserInfo, toggleForm, toggleSearch, isLoggedIn } = useContext(commonContext);
+    const { formUserInfo, toggleForm, toggleSearch, isLoggedIn, setLoading } = useContext(commonContext);
     const { cartItems } = useContext(cartContext);
     const [isSticky, setIsSticky] = useState(false);
 
@@ -29,6 +29,9 @@ const Header = () => {
 
     const cartQuantity = cartItems.length;
 
+    const handleAllProducts = () => {
+        setLoading(true);
+    }
 
     return (
         <>
@@ -48,7 +51,7 @@ const Header = () => {
 
                             <div className="vendors_action">
                                 <Link to="/all-products">
-                                    <AiOutlineShop />
+                                    <AiOutlineShop onClick={handleAllProducts} />
                                 </Link>
                                 <div className="tooltip">Vendors</div>
                             </div>

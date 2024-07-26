@@ -10,11 +10,15 @@ import {
 } from 'react-icons/fa';
 import commonContext from '../../contexts/common/commonContext';
 import Loader from '../../components/common/loader/Loader';
+import { useLocation } from 'react-router-dom';
 
 const ArtistProfile = () => {
   const { loginResponse, setLoading, loading } = useContext(commonContext);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const userIdParam = queryParams.get('userId') || loginResponse.userId;
   const [artist, setArtist] = useState({
-    userId: loginResponse.userId || '',
+    userId: userIdParam,
     fullName: loginResponse.fullName || '',
     email: '',
     contactNumber: '',
@@ -35,15 +39,13 @@ const ArtistProfile = () => {
   const [selectedTab, setSelectedTab] = useState('description');
 
   useEffect(() => {
-    if (loading) {
-        fetchArtistDetails();
-    }
-  }, [loading]);
+    fetchArtistDetails();
+  }, []);
 
   const fetchArtistDetails = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/artist/user/${loginResponse.userId}`
+        `http://localhost:8080/api/artist/user/${userIdParam}`
       );
       if (response.data.success) {
         setArtist(response.data.artists[0]);

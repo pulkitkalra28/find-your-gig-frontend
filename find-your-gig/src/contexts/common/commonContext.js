@@ -12,7 +12,7 @@ const initialState = {
     isLoggedIn: false,
     loginResponse: {},
     searchResults: [],
-    loading: false
+    loading: true
 };
 
 // Common-Provider Component

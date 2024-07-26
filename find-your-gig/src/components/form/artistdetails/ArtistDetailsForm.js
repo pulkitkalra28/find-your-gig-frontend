@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
@@ -12,9 +12,12 @@ const ArtistDetailsForm = () => {
   const { loginResponse } = useContext(commonContext);
   const [currentStep, setCurrentStep] = useState(1);
   const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const userIdParam = queryParams.get('userId') || loginResponse.userId;
   
   const [formData, setFormData] = useState({
-    userId: loginResponse.userId || '',
+    userId: userIdParam,
     fullName: loginResponse.fullName || '',
     email: '',
     contactNumber: '',
@@ -63,7 +66,7 @@ const ArtistDetailsForm = () => {
       const result = await response.json();
       console.log(result);
       // Redirect to artist profile page
-      navigate(`/profile/${loginResponse.userId}`); // Adjust the route as needed
+      navigate(`/profile?userId=${loginResponse.userId}`); // Adjust the route as needed
     } catch (error) {
       console.error('Error:', error);
       // Handle error, show error message, etc.

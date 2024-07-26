@@ -1,53 +1,62 @@
 import React, { useContext } from 'react';
 import { IoMdStar } from 'react-icons/io';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { displayMoney } from '../../helpers/utils';
 import cartContext from '../../contexts/cart/cartContext';
 import useActive from '../../hooks/useActive';
+import commonContext from '../../contexts/common/commonContext';
 
 
 const ProductCard = (props) => {
+    const navigate = useNavigate();
+    const { setLoading } = useContext(commonContext);
+    const { fullName, description, profilePicture, artistId, userId } = props;
+    // const { addItem } = useContext(cartContext);
+    // const { id, images, title, info, finalPrice, originalPrice, rateCount, path } = props;
+    // const { active, handleActive, activeClass } = useActive(false);
 
-    const { id, images, title, info, finalPrice, originalPrice, rateCount, path } = props;
 
-    const { addItem } = useContext(cartContext);
-    const { active, handleActive, activeClass } = useActive(false);
+    // // handling Add-to-cart
+    // const handleAddItem = () => {
+    //     const item = { ...props };
+    //     addItem(item);
 
+    //     handleActive(id);
 
-    // handling Add-to-cart
-    const handleAddItem = () => {
-        const item = { ...props };
-        addItem(item);
+    //     setTimeout(() => {
+    //         handleActive(false);
+    //     }, 3000);
+    // };
 
-        handleActive(id);
+    // const newPrice = displayMoney(finalPrice);
+    // const oldPrice = displayMoney(originalPrice);
 
-        setTimeout(() => {
-            handleActive(false);
-        }, 3000);
-    };
+    const handleInviteClick = () => {
+        // opens reservation form
+    }
 
-    const newPrice = displayMoney(finalPrice);
-    const oldPrice = displayMoney(originalPrice);
+    const handleCardClick = () => {
+        navigate(`/profile?userId=${userId}`);
+        setLoading(true);
+      };
 
 
     return (
         <>
             <div className="card products_card">
                 <figure className="products_img">
-                    <Link to={`${path}${id}`}>
-                        <img src={images[0]} alt="product-img" />
-                    </Link>
+                    <img src={profilePicture} alt="product-img" onClick={handleCardClick} />
                 </figure>
                 <div className="products_details">
-                    <span className="rating_star">
+                    {/* <span className="rating_star">
                         {
                             [...Array(rateCount)].map((_, i) => <IoMdStar key={i} />)
                         }
-                    </span>
-                    <h3 className="products_title">
-                        <Link to={`${path}${id}`}>{title}</Link>
+                    </span> */}
+                    <h3 className="products_title" onClick={handleCardClick}>
+                        {fullName}
                     </h3>
-                    <h5 className="products_info">{info}</h5>
+                    <h5 className="products_info">{description}</h5>
                     <div className="separator"></div>
                     {/* <h2 className="products_price">
                         {newPrice} &nbsp;
@@ -55,10 +64,10 @@ const ProductCard = (props) => {
                     </h2> */}
                     <button
                         type="button"
-                        className={`btn products_btn ${activeClass(id)}`}
-                        onClick={handleAddItem}
+                        className={`btn products_btn`}
+                        onClick={handleInviteClick}
                     >
-                        {active ? 'Added' : 'Invite'}
+                        Invite
                     </button>
                 </div>
             </div>

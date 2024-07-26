@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import axios from 'axios';
 import './CompanyDetailsForm.scss';
@@ -8,6 +8,9 @@ import commonContext from '../../../contexts/common/commonContext';
 const CompanyDetailsForm = () => {
   const { loginResponse } = useContext(commonContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const userIdParam = queryParams.get('userId') || loginResponse.userId;
   const [locations, setLocations] = useState([]);
 
   useEffect(() => {
@@ -21,7 +24,7 @@ const CompanyDetailsForm = () => {
   }, []);
 
   const [formData, setFormData] = useState({
-    userId: loginResponse.userId || '',
+    userId: userIdParam,
     fullName: loginResponse.fullName || '',
     email: '',
     contactNumber: '',
@@ -54,7 +57,7 @@ const CompanyDetailsForm = () => {
       const result = await response.json();
       console.log(result);
       // Redirect to company profile page
-      navigate(`/profile/${loginResponse.userId}`); // Adjust the route as needed
+      navigate(`/profile?userId=${loginResponse.userId}`); // Adjust the route as needed
     } catch (error) {
       console.error('Error:', error);
       // Handle error, show error message, etc.

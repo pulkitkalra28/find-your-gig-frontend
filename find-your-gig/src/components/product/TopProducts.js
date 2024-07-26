@@ -6,27 +6,27 @@ import productsData from '../../data/productsData';
 import ProductCard from './ProductCard';
 
 
-const TopProducts = () => {
+const TopProducts = ({ artists, gigs}) => {
 
-    const [products, setProducts] = useState(productsData);
+    const [filteredArtists, setFilteredArtists] = useState(artists);
     const { activeClass, handleActive } = useActive(0);
 
     // making a unique set of product's category
-    const productsCategory = [
+    const gigsCategory = [
         'All',
-        ...new Set(productsData.map(item => item.category))
+        ...gigs
     ];
 
     // handling product's filtering
-    const handleProducts = (category, i) => {
+    const handleArtists = (category, i) => {
         if (category === 'All') {
-            setProducts(productsData);
+            setFilteredArtists(artists);
             handleActive(i);
             return;
         }
 
-        const filteredProducts = productsData.filter(item => item.category === category);
-        setProducts(filteredProducts);
+        const filteredList = artists.filter(item => item.preferredGigs.includes(category));
+        setFilteredArtists(filteredList);
         handleActive(i);
     };
 
@@ -36,11 +36,11 @@ const TopProducts = () => {
             <div className="products_filter_tabs">
                 <ul className="tabs">
                     {
-                        productsCategory.map((item, i) => (
+                        gigsCategory.map((item, i) => (
                             <li
                                 key={i}
                                 className={`tabs_item ${activeClass(i)}`}
-                                onClick={() => handleProducts(item, i)}
+                                onClick={() => handleArtists(item, i)}
                             >
                                 {item}
                             </li>
@@ -50,7 +50,7 @@ const TopProducts = () => {
             </div>
             <div className="wrapper products_wrapper">
                 {
-                    products.slice(0, 11).map(item => (
+                    filteredArtists.slice(0, 11).map(item => (
                         <ProductCard
                             key={item.id}
                             {...item}

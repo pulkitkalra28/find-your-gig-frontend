@@ -62,15 +62,15 @@ const AccountForm = () => {
                 setLoggedIn(true);
                 setLoginResponse(result);
                 if (isSignupVisible) {
-                    if (result.type === 'ARTIST') 
-                        navigate("/artistDetailsForm");
+                    if (result.type === 'ARTIST')
+                        navigate(`/artistDetailsForm?userId=${result.userId}`);
                     else if (result.type === 'COMPANY')
-                        navigate("/companyDetailsForm")
+                        navigate(`/companyDetailsForm?userId=${result.userId}`)
                 } else {
                     if (result.type === 'ARTIST') {
-                        navigate(`/profile/${result.userId}`);
+                        navigate(`/profile?userId=${result.userId}`);
                     } else if (result.type === 'COMPANY') {
-                        navigate(`/profile/${result.userId}`);
+                        navigate(`/profile?userId=${result.userId}`);
                     }
                 }
             } else {

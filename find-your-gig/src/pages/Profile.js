@@ -7,7 +7,7 @@ import ErrorPage from './ErrorPage';
 const Profile = () => {
   const { loginResponse } = useContext(commonContext);
   // hatado
-  // loginResponse.type = 'COMPANY';
+  // loginResponse.type = 'ARTIST';
 
   const renderProfile = () => {
     switch (loginResponse.type) {
