@@ -1,7 +1,12 @@
 export const dropdownMenu = [
     {
         id: 1,
-        link: "Orders",
-        path: "*",
+        link: "Your Profile",
+        path: "/profile",
+    },
+    {
+        id: 2,
+        link: "View All Reservations",
+        path: "/reservations"
     }
 ];

@@ -10,7 +10,9 @@ const initialState = {
     formUserInfo: '',
     isSearchOpen: false,
     isLoggedIn: false,
-    searchResults: []
+    loginResponse: {},
+    searchResults: [],
+    loading: false
 };
 
 // Common-Provider Component
@@ -48,12 +50,26 @@ const CommonProvider = ({ children }) => {
         })
     }
 
+    const setLoginResponse = (val) => {
+        return dispatch({
+            type: "SET_LOGIN_RESPONSE",
+            payload: { val }
+        })
+    }
+
     const setSearchResults = (results) => {
         return dispatch({
             type: 'SET_SEARCH_RESULTS',
             payload: { results }
         });
     };
+
+    const setLoading = (val) => {
+        return dispatch({
+            type: 'SET_LOADING',
+            payload: { val }
+        });
+    }
 
     // Context values
     const values = {
@@ -62,7 +78,9 @@ const CommonProvider = ({ children }) => {
         setFormUserInfo,
         toggleSearch,
         setLoggedIn,
-        setSearchResults
+        setLoginResponse,
+        setSearchResults,
+        setLoading
     };
 
     return (

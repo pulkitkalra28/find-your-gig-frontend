@@ -25,7 +25,13 @@ const commonReducer = (state, action) => {
             return {
                 ...state,
                 isLoggedIn: action.payload.val
-            }    
+            };
+            
+        case 'SET_LOGIN_RESPONSE':
+            return {
+                ...state,
+                loginResponse: action.payload.val
+            };
 
         case 'SET_SEARCH_RESULTS':
             return {
@@ -33,6 +39,11 @@ const commonReducer = (state, action) => {
                 searchResults: action.payload.results
             };
 
+        case 'SET_LOADING':
+            return {
+                ...state,
+                loading: action.payload.val
+            }; 
 
         default:
             return state;

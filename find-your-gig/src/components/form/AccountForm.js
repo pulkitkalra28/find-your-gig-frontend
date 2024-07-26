@@ -1,15 +1,16 @@
 import React, { useContext, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import commonContext from '../../contexts/common/commonContext';
 import useForm from '../../hooks/useForm';
 import useOutsideClose from '../../hooks/useOutsideClose';
 import useScrollDisable from '../../hooks/useScrollDisable';
 
 const AccountForm = () => {
-    const { isFormOpen, toggleForm, setLoggedIn } = useContext(commonContext);
+    const { isFormOpen, toggleForm, setLoggedIn, setLoginResponse, loading, setLoading } = useContext(commonContext);
     const { inputValues, handleInputValues, /*handleFormSubmit*/ } = useForm();
 
     const formRef = useRef();
+    const navigate = useNavigate();
 
     useOutsideClose(formRef, () => {
         toggleForm(false);
@@ -28,6 +29,7 @@ const AccountForm = () => {
 
     // Handle form submission
     const handleFormSubmit = async (event) => {
+        setLoading(true);
         event.preventDefault();
         setErrorMessage(''); // Clear any previous error messages
 
@@ -58,6 +60,19 @@ const AccountForm = () => {
             if (result.success) {
                 toggleForm(false); // Close the form on success
                 setLoggedIn(true);
+                setLoginResponse(result);
+                if (isSignupVisible) {
+                    if (result.type === 'ARTIST') 
+                        navigate("/artistDetailsForm");
+                    else if (result.type === 'COMPANY')
+                        navigate("/companyDetailsForm")
+                } else {
+                    if (result.type === 'ARTIST') {
+                        navigate(`/profile/${result.userId}`);
+                    } else if (result.type === 'COMPANY') {
+                        navigate(`/profile/${result.userId}`);
+                    }
+                }
             } else {
                 setErrorMessage(result.errorDetail.description); // Show error message
             }
