@@ -10,7 +10,7 @@ import SearchBar from './SearchBar';
 
 const Header = () => {
 
-    const { formUserInfo, toggleForm, toggleSearch, isLoggedIn, setLoading } = useContext(commonContext);
+    const { formUserInfo, toggleForm, toggleSearch, isLoggedIn, setLoading, loginResponse } = useContext(commonContext);
     const { cartItems } = useContext(cartContext);
     const [isSticky, setIsSticky] = useState(false);
 
@@ -53,10 +53,10 @@ const Header = () => {
                                 <Link to="/all-products">
                                     <AiOutlineShop onClick={handleAllProducts} />
                                 </Link>
-                                <div className="tooltip">Vendors</div>
+                                <div className="tooltip">Artists</div>
                             </div>
 
-                            <div className="cart_action">
+                            {/* <div className="cart_action">
                                 <Link to="/cart">
                                     <AiOutlineShoppingCart />
                                     {
@@ -66,7 +66,7 @@ const Header = () => {
                                     }
                                 </Link>
                                 <div className="tooltip">Cart</div>
-                            </div>
+                            </div> */}
 
                             <div className="user_action">
                                 <span>
@@ -87,16 +87,15 @@ const Header = () => {
                                     }
                                     <div className="separator"></div>
                                     <ul>
-                                        {
-                                            dropdownMenu.map(item => {
-                                                const { id, link, path } = item;
-                                                return (
-                                                    <li key={id}>
-                                                        <Link to={path}>{link}</Link>
-                                                    </li>
-                                                );
-                                            })
-                                        }
+                                        <li>
+                                            <Link to={`profile?userId=${loginResponse.userId}`}>Profile</Link>
+                                        </li>
+                                        {loginResponse.type !== 'ARTIST' && <li>
+                                            <Link to={`reservations?userId=${loginResponse.userId}`}>View All Reservations</Link>
+                                        </li>}
+                                        {loginResponse.type === 'ARTIST' && <li>
+                                            <Link to={`invitations?userId=${loginResponse.userId}`}>View All Invitations</Link>
+                                        </li>}
                                     </ul>
                                 </div>
                             </div>

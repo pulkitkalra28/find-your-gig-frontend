@@ -6,7 +6,7 @@ import useOutsideClose from '../../hooks/useOutsideClose';
 import useScrollDisable from '../../hooks/useScrollDisable';
 
 const AccountForm = () => {
-    const { isFormOpen, toggleForm, setLoggedIn, setLoginResponse, loading, setLoading } = useContext(commonContext);
+    const { isFormOpen, toggleForm, setLoggedIn, setLoginResponse, loading, setLoading, setProfileData } = useContext(commonContext);
     const { inputValues, handleInputValues, /*handleFormSubmit*/ } = useForm();
 
     const formRef = useRef();
@@ -60,7 +60,17 @@ const AccountForm = () => {
             if (result.success) {
                 toggleForm(false); // Close the form on success
                 setLoggedIn(true);
-                setLoginResponse(result);
+                setLoginResponse({
+                    userId: result.userId,
+                    fullName: result.fullName,
+                    email: result.email,
+                    type: result.type
+                });
+                setProfileData({
+                    userId: result.userId,
+                    type: result.type
+                });
+
                 if (isSignupVisible) {
                     if (result.type === 'ARTIST')
                         navigate(`/artistDetailsForm?userId=${result.userId}`);

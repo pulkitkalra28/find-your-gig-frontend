@@ -35,15 +35,15 @@
     }
 
     &.hero_slide-0::before {
-        content: "Top Delicacies";
+        content: "Dancers";
     }
 
     &.hero_slide-1::before {
-        content: "Lip Smacking";
+        content: "Musicians";
     }
 
     &.hero_slide-2::before {
-        content: "Food Fiesta";
+        content: "Sports";
     }
 
     @include devices(lg) {

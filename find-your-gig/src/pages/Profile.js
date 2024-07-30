@@ -5,12 +5,10 @@ import commonContext from '../contexts/common/commonContext';
 import ErrorPage from './ErrorPage';
 
 const Profile = () => {
-  const { loginResponse } = useContext(commonContext);
-  // hatado
-  // loginResponse.type = 'ARTIST';
+  const { loginResponse, profileData } = useContext(commonContext);
 
   const renderProfile = () => {
-    switch (loginResponse.type) {
+    switch (profileData.type) {
       case 'ARTIST':
         return <ArtistProfile />;
       case 'COMPANY':

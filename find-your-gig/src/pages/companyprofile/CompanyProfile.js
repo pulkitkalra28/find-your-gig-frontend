@@ -7,9 +7,10 @@ import './CompanyProfile.scss';
 import commonContext from '../../contexts/common/commonContext';
 import Loader from '../../components/common/loader/Loader';
 import { useLocation } from 'react-router-dom';
+const _ = require('lodash');
 
 const CompanyProfile = () => {
-  const { loginResponse, loading, setLoading } = useContext(commonContext);
+  const { loginResponse, loading, setLoading, setCompanyDetails } = useContext(commonContext);
   const [isEditing, setIsEditing] = useState(false);
   const [profilePic, setProfilePic] = useState('');
   const [showProfilePicOptions, setShowProfilePicOptions] = useState(false);
@@ -52,6 +53,7 @@ const CompanyProfile = () => {
           location: companyData.location,
           companyName: companyData.companyName
         });
+        setCompanyDetails(companyData);
       }
     } catch (error) {
       console.error('Error fetching company details:', error);
@@ -87,6 +89,7 @@ const CompanyProfile = () => {
           location: companyData.location,
           companyName: companyData.companyName
         });
+        setCompanyDetails(companyData);
       } else {
         // show error message
       }

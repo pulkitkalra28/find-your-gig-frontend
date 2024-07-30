@@ -10,10 +10,9 @@ import 'swiper/scss/autoplay';
 import 'swiper/scss/pagination';
 
 
-const HeroSlider = () => {
+const HeroSlider = ({ sliderData }) => {
 
     const heroProducts = productsData.filter(item => item.tag === 'hero-product');
-
 
     return (
         <Swiper
@@ -29,27 +28,28 @@ const HeroSlider = () => {
             }}
         >
             {
-                heroProducts.map((item, i) => {
-                    const { id, title, tagline, heroImage, finalPrice, originalPrice, path } = item;
-                    const newPrice = displayMoney(finalPrice);
-                    const oldPrice = displayMoney(originalPrice);
+                sliderData.map((item, id) => {
+                    // const { id, title, tagline, heroImage, finalPrice, originalPrice, path } = item;
+                    const { title, subTitle, imageUrl, path, buttonName } = item;
+                    // const newPrice = displayMoney(finalPrice);
+                    // const oldPrice = displayMoney(originalPrice);
 
                     return (
                         <SwiperSlide
                             key={id}
-                            className={`wrapper hero_wrapper hero_slide-${i}`}
+                            className={`wrapper hero_wrapper hero_slide-${id}`}
                         >
                             <div className="hero_item_txt">
                                 <h3>{title}</h3>
-                                <h1>{tagline}</h1>
-                                <h2 className="hero_price">
+                                <h1>{subTitle}</h1>
+                                {/* <h2 className="hero_price">
                                     {newPrice} &nbsp;
                                     <small><del>{oldPrice}</del></small>
-                                </h2>
-                                <Link to={`${path}${id}`} className="btn">Shop Now</Link>
+                                </h2> */}
+                                <Link to={`${path}${id}`} className="btn">{buttonName}</Link>
                             </div>
                             <figure className="hero_item_img">
-                                <img src={heroImage} alt="product-img" />
+                                <img src={imageUrl} alt="product-img" />
                             </figure>
                         </SwiperSlide>
                     );

@@ -6,7 +6,7 @@ import './CompanyDetailsForm.scss';
 import commonContext from '../../../contexts/common/commonContext';
 
 const CompanyDetailsForm = () => {
-  const { loginResponse } = useContext(commonContext);
+  const { loginResponse, setCompanyDetails } = useContext(commonContext);
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -14,7 +14,7 @@ const CompanyDetailsForm = () => {
   const [locations, setLocations] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/artist/locations')
+    axios.get('http://localhost:8080/api/common/locations')
       .then(response => {
         setLocations(response.data.map(location => ({ value: location, label: location })));
       })
@@ -55,9 +55,8 @@ const CompanyDetailsForm = () => {
       }
 
       const result = await response.json();
-      console.log(result);
-      // Redirect to company profile page
-      navigate(`/profile?userId=${loginResponse.userId}`); // Adjust the route as needed
+      setCompanyDetails(result.companies[0]);
+      navigate(`/all-products`); // Adjust the route as needed
     } catch (error) {
       console.error('Error:', error);
       // Handle error, show error message, etc.

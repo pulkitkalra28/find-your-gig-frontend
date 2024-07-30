@@ -39,6 +39,24 @@ const commonReducer = (state, action) => {
                 searchResults: action.payload.results
             };
 
+        case 'SET_PROFILE_DATA':
+            return {
+                ...state,
+                profileData: action.payload.val
+            };
+
+        case 'SET_ARTIST_DETAILS':
+            return {
+                ...state,
+                artistDetails: action.payload.val
+            };
+                
+        case 'SET_COMPANY_DETAILS':
+            return {
+                ...state,
+                companyDetails: action.payload.val
+            };
+
         case 'SET_LOADING':
             return {
                 ...state,

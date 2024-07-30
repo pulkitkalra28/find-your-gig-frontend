@@ -7,6 +7,7 @@ import TopProducts from '../components/product/TopProducts';
 import Services from '../components/common/Services';
 import commonContext from '../contexts/common/commonContext';
 import Loader from '../components/common/loader/Loader';
+const _ = require("lodash");
 
 
 const Home = () => {
@@ -14,6 +15,7 @@ const Home = () => {
     const [artists, setArtists] = useState([]);
     const [locations, setLocations] = useState([]);
     const [gigs, setGigs] = useState([]);
+    const [sliderData, setSliderData] = useState([]);
 
     useEffect(() => {
         fetchLandingPageData();
@@ -26,6 +28,7 @@ const Home = () => {
               setArtists(response.data.artists);
               setLocations(response.data.locations);
               setGigs(response.data.gigs);
+              setSliderData(response.data.sliderDataList);
             } else {
                 // show error page
             }
@@ -43,7 +46,7 @@ const Home = () => {
     return (
         <main>
             <section id="hero">
-                <HeroSlider />
+                <HeroSlider sliderData={sliderData} />
             </section>
 
             {/* <section id="featured" className="section">
@@ -55,7 +58,7 @@ const Home = () => {
 
             <section id="products" className="section">
                 <div className="container">
-                    <SectionsHead heading="Top Vendors" />
+                    <SectionsHead heading="Top Artists" />
                     <TopProducts artists={artists} gigs={gigs} />
                 </div>
             </section>

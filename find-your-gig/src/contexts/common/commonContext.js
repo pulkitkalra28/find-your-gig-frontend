@@ -12,6 +12,9 @@ const initialState = {
     isLoggedIn: false,
     loginResponse: {},
     searchResults: [],
+    profileData: {},
+    artistDetails: {},
+    companyDetails: {},
     loading: true
 };
 
@@ -64,6 +67,27 @@ const CommonProvider = ({ children }) => {
         });
     };
 
+    const setProfileData = (val) => {
+        return dispatch({
+            type: 'SET_PROFILE_DATA',
+            payload: { val }
+        });
+    };
+
+    const setArtistDetails = (val) => {
+        return dispatch({
+            type: 'SET_ARTIST_DETAILS',
+            payload: { val }
+        });
+    };
+
+    const setCompanyDetails = (val) => {
+        return dispatch({
+            type: 'SET_COMPANY_DETAILS',
+            payload: { val }
+        });
+    };
+
     const setLoading = (val) => {
         return dispatch({
             type: 'SET_LOADING',
@@ -80,6 +104,9 @@ const CommonProvider = ({ children }) => {
         setLoggedIn,
         setLoginResponse,
         setSearchResults,
+        setProfileData,
+        setArtistDetails,
+        setCompanyDetails,
         setLoading
     };
 

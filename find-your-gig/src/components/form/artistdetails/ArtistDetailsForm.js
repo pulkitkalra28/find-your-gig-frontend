@@ -9,7 +9,7 @@ import './ArtistDetailsForm.scss';
 import commonContext from '../../../contexts/common/commonContext';
 
 const ArtistDetailsForm = () => {
-  const { loginResponse } = useContext(commonContext);
+  const { loginResponse, setArtistDetails } = useContext(commonContext);
   const [currentStep, setCurrentStep] = useState(1);
   const navigate = useNavigate();
   const location = useLocation();
@@ -64,8 +64,7 @@ const ArtistDetailsForm = () => {
       }
 
       const result = await response.json();
-      console.log(result);
-      // Redirect to artist profile page
+      setArtistDetails(result.artists[0]);
       navigate(`/profile?userId=${loginResponse.userId}`); // Adjust the route as needed
     } catch (error) {
       console.error('Error:', error);

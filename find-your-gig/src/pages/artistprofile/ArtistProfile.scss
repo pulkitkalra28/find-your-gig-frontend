@@ -147,4 +147,27 @@
     color: #000;
     justify-content: end;
 }
+
+.invite-btn {
+  display: inline-block;
+  background-color: rgba($color: #5dca39, $alpha: 0.8);
+  color: var(--text-color);
+  padding: 0.8rem 1.5rem;
+  border-radius: 3px;
+  &:hover {
+      background-color: var(--main-color);
+      color: #ffffff;
+  }
+
+  width: 50%;
+  margin-top: 1.2rem;
+
+  &.active {
+      background-color: green;
+  }
+
+  &[disabled] {
+      cursor: not-allowed;
+  }
+}
   

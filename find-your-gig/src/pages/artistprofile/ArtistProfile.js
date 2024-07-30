@@ -11,9 +11,10 @@ import {
 import commonContext from '../../contexts/common/commonContext';
 import Loader from '../../components/common/loader/Loader';
 import { useLocation } from 'react-router-dom';
+import ReservationForm from '../../components/form/reservationdetails/ReservationForm';
 
 const ArtistProfile = () => {
-  const { loginResponse, setLoading, loading } = useContext(commonContext);
+  const { loginResponse, setLoading, loading, setArtistDetails } = useContext(commonContext);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const userIdParam = queryParams.get('userId') || loginResponse.userId;
@@ -37,6 +38,7 @@ const ArtistProfile = () => {
     videoUrls: []
   });
   const [selectedTab, setSelectedTab] = useState('description');
+  const [showReservationForm, setShowReservationForm] = useState(false);
 
   useEffect(() => {
     fetchArtistDetails();
@@ -49,6 +51,7 @@ const ArtistProfile = () => {
       );
       if (response.data.success) {
         setArtist(response.data.artists[0]);
+        setArtistDetails(response.data.artists[0]);
       } else {
           // show error page
       }
@@ -61,6 +64,14 @@ const ArtistProfile = () => {
 
   const handleEditProfile = () => {
 
+  }
+
+  const handleInviteClick = () => {
+    setShowReservationForm(true);
+  }
+
+  const handleCloseReservationForm = () => {
+    setShowReservationForm(false);
   }
 
   const renderContent = () => {
@@ -160,6 +171,9 @@ const ArtistProfile = () => {
               <FaGlobe />
             </a>
           </div>
+          <button type="button" className="invite-btn" onClick={handleInviteClick}>
+            Invite
+          </button>
         </div>
       </div>
       <div className="profile-content">
@@ -197,6 +211,7 @@ const ArtistProfile = () => {
         </div>
         <div className="tab-content">{renderContent()}</div>
       </div>
+      <ReservationForm show={showReservationForm} handleClose={handleCloseReservationForm} />
     </div>
   );
 };
