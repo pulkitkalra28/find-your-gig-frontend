@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router';
 import useScrollRestore from '../hooks/useScrollRestore';
 import AllProducts from '../pages/AllProducts';
 import Cart from '../pages/Cart';
-import Home from '../pages/Home';
+import Home from '../pages/home/Home';
 import ProductDetails from '../pages/ProductDetails';
 import ErrorPage from '../pages/ErrorPage';
 import ArtistDetailsForm from '../components/form//artistdetails/ArtistDetailsForm';

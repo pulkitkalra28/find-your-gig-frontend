@@ -5,3 +5,7 @@ export const isEmpty = (value) => {
     if (typeof value === 'string') return value.trim() === '';
     return false;
   };
+
+ export const convertToTitleCase = (str) => {
+    return str.toLowerCase().split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+}

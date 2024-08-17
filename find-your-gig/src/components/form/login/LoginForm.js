@@ -1,11 +1,11 @@
 import React, { useContext, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import commonContext from '../../contexts/common/commonContext';
-import useForm from '../../hooks/useForm';
-import useOutsideClose from '../../hooks/useOutsideClose';
-import useScrollDisable from '../../hooks/useScrollDisable';
+import commonContext from '../../../contexts/common/commonContext';
+import useForm from '../../../hooks/useForm';
+import useOutsideClose from '../../../hooks/useOutsideClose';
+import useScrollDisable from '../../../hooks/useScrollDisable';
 
-const AccountForm = () => {
+const LoginForm = () => {
     const { isFormOpen, toggleForm, setLoggedIn, setLoginResponse, loading, setLoading, setProfileData } = useContext(commonContext);
     const { inputValues, handleInputValues, /*handleFormSubmit*/ } = useForm();
 
@@ -103,7 +103,7 @@ const AccountForm = () => {
                                 <p>
                                     {isSignupVisible ? 'Already have an account?' : 'New user?'}
                                     &nbsp;&nbsp;
-                                    <button type="button" onClick={handleIsSignupVisible}>
+                                    <button style={{ color: "#00ffff" }} type="button" onClick={handleIsSignupVisible}>
                                         {isSignupVisible ? 'Login' : 'Create an account'}
                                     </button>
                                 </p>
@@ -211,4 +211,4 @@ const AccountForm = () => {
     );
 };
 
-export default AccountForm;
+export default LoginForm;

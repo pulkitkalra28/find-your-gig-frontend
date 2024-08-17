@@ -4,15 +4,31 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, A11y, Autoplay } from 'swiper';
 import { displayMoney } from '../../helpers/utils';
 import productsData from '../../data/productsData';
-
+import landingPageDance from '../../images/landingPageDance.jpeg';
+import landingPageMusic from '../../images/landingPageMusic.jpeg';
+import landingPageSports from '../../images/landingPageSports.jpeg';
 import 'swiper/scss';
 import 'swiper/scss/autoplay';
 import 'swiper/scss/pagination';
+import './Slider.scss';
 
 
 const HeroSlider = ({ sliderData }) => {
 
     const heroProducts = productsData.filter(item => item.tag === 'hero-product');
+
+    const getImagePath = (val) => {
+        switch (val) {
+            case "landingPageDance":
+                return landingPageDance;
+            case "landingPageMusic":
+                return landingPageMusic;
+            case "landingPageSports":
+                return landingPageSports;
+            default:
+                return null;            
+        }
+    }
 
     return (
         <Swiper
@@ -26,6 +42,7 @@ const HeroSlider = ({ sliderData }) => {
                 delay: 4000,
                 disableOnInteraction: false,
             }}
+            className='swiper-background'
         >
             {
                 sliderData.map((item, id) => {
@@ -49,7 +66,7 @@ const HeroSlider = ({ sliderData }) => {
                                 <Link to={`${path}${id}`} className="btn">{buttonName}</Link>
                             </div>
                             <figure className="hero_item_img">
-                                <img src={imageUrl} alt="product-img" />
+                                <img src={getImagePath(imageUrl)} alt="product-img" />
                             </figure>
                         </SwiperSlide>
                     );
